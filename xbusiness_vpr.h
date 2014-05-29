@@ -23,6 +23,12 @@
 #define _xbusiness_vpr_h_
 #include <memory.h>
 
+#ifdef XVPR_LIB_EXPORTS
+#define DLLAPI	_declspec(dllexport)
+#else
+#define DLLAPI	_declspec(dllimport)
+#endif
+
 #ifdef __cplusplus 
 extern "C" {
 #endif 
@@ -79,18 +85,18 @@ struct xvpr_result {
  * ÒıÇæ³õÊ¼»¯£¨Ö»ÄÜµ÷ÓÃÒ»´Î£©
  * @return ³É¹¦·µ»ØXVPR_CODE_SUCCESS£¬Ê§°Ü·µ»ØXVPR_CODE_FAIL
  */
-XVPR_CODE xvpr_global_init();
+DLLAPI XVPR_CODE xvpr_global_init();
 
 /**
  * »ñÈ¡ÒıÇæ°æ±¾ĞÅÏ¢
  * @return ·µ»Ø°æ±¾ĞÅÏ¢
  */
-const char *xvpr_version();
+DLLAPI const char *xvpr_version();
 
 /**
  * ÊÍ·ÅÒıÇæ×ÊÔ´£¨ÔÚ³ÌĞòÍË³öµÄÊ±ºòµ÷ÓÃ£©
  */
-void xvpr_global_release();
+DLLAPI void xvpr_global_release();
 
 /**
  * ÉèÖÃÒıÇæ²ÎÊı
@@ -98,7 +104,7 @@ void xvpr_global_release();
  * @param param ²ÎÊıÖµ
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_global_setparam(const char *key, const char *param);
+DLLAPI XVPR_CODE xvpr_global_setparam(const char *key, const char *param);
 
 /**
  * ³õÊ¼»¯µ÷ÓÃÇëÇó£¨¶àÏß³ÌÖ®¼ä²»ÄÜ¹²Ïí¸Ã½Ó¿Ú·µ»ØµÄ¾ä±ú£©
@@ -106,7 +112,7 @@ XVPR_CODE xvpr_global_setparam(const char *key, const char *param);
  * ÒÔ±ãÉèÖÃ²»Í¬µÄÈº×éID
  * @return ·µ»ØÇëÇó¾ä±ú
  */
-XVPR *xvpr_client_init(const char *collection);
+DLLAPI XVPR *xvpr_client_init(const char *collection);
 
 /**
  * ´´½¨Ëµ»°ÈË
@@ -114,7 +120,7 @@ XVPR *xvpr_client_init(const char *collection);
  * @param name Ëµ»°ÈËÓÃ»§Ãû
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_create_person(XVPR *handle, const char *name);
+DLLAPI XVPR_CODE xvpr_create_person(XVPR *handle, const char *name);
 
 /**
  * É¾³ıËµ»°ÈËĞÅÏ¢
@@ -122,7 +128,7 @@ XVPR_CODE xvpr_create_person(XVPR *handle, const char *name);
  * @param name Ëµ»°ÈËÓÃ»§Ãû
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_remove_person(XVPR *handle, const char *name);
+DLLAPI XVPR_CODE xvpr_remove_person(XVPR *handle, const char *name);
 
 /**
  * »ñÈ¡Ëµ»°ÈËĞÅÏ¢
@@ -131,7 +137,7 @@ XVPR_CODE xvpr_remove_person(XVPR *handle, const char *name);
  * @param info ·µ»ØËµ»°ÈËĞÅÏ¢
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_get_info(XVPR *handle, const char *name, xvpr_person_info &info);
+DLLAPI XVPR_CODE xvpr_get_info(XVPR *handle, const char *name, xvpr_person_info &info);
 
 /**
  * ÎªËµ»°ÈËÌí¼ÓÓïÒô
@@ -143,7 +149,7 @@ XVPR_CODE xvpr_get_info(XVPR *handle, const char *name, xvpr_person_info &info);
  * @param checksum ·µ»ØÓïÒôMD5Öµ
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_add_speech(XVPR *handle, const char *name, const char *paramlist, 
+DLLAPI XVPR_CODE xvpr_add_speech(XVPR *handle, const char *name, const char *paramlist, 
 						  short *stream, size_t buf_len, char *checksum);
 
 
@@ -153,7 +159,7 @@ XVPR_CODE xvpr_add_speech(XVPR *handle, const char *name, const char *paramlist,
  * @param checksum ÓïÒôMD5Öµ
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_remove_speech(XVPR *handle, const char *checksum);
+DLLAPI XVPR_CODE xvpr_remove_speech(XVPR *handle, const char *checksum);
 
 /**
  * ±£Áô×îĞÂÓïÑÔ£¬É¾³ı¶àÓàÓïÒô
@@ -161,7 +167,7 @@ XVPR_CODE xvpr_remove_speech(XVPR *handle, const char *checksum);
  * @param name Ëµ»°ÈËÓÃ»§Ãû
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_reserve_speeches(XVPR *handle, const char *name);
+DLLAPI XVPR_CODE xvpr_reserve_speeches(XVPR *handle, const char *name);
 
 
 /**
@@ -170,7 +176,7 @@ XVPR_CODE xvpr_reserve_speeches(XVPR *handle, const char *name);
  * @param name Ëµ»°ÈËÓÃ»§Ãû
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_register_person(XVPR *handle, const char *name);
+DLLAPI XVPR_CODE xvpr_register_person(XVPR *handle, const char *name);
 
 /**
  * Ëµ»°ÈËÉùÎÆÑéÖ¤
@@ -182,7 +188,7 @@ XVPR_CODE xvpr_register_person(XVPR *handle, const char *name);
  * @param res ·µ»ØÉùÎÆÈ·ÈÏ½á¹û
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_verify_person(XVPR *handle, const char *name, const char *paramlist, short *buffer, size_t buf_len, xvpr_result &res);
+DLLAPI XVPR_CODE xvpr_verify_person(XVPR *handle, const char *name, const char *paramlist, short *buffer, size_t buf_len, xvpr_result &res);
 /**
  * Ëµ»°ÈËÉùÎÆ±æÈÏ
  * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú
@@ -192,7 +198,7 @@ XVPR_CODE xvpr_verify_person(XVPR *handle, const char *name, const char *paramli
  * @param res ·µ»ØÉùÎÆÈ·ÈÏ½á¹û
  * @return ·µ»Ø×´Ì¬Öµ
  */
-XVPR_CODE xvpr_identify_person(XVPR *handle, const char *paramlist, short *buffer, size_t buf_len, xvpr_result &res);
+DLLAPI XVPR_CODE xvpr_identify_person(XVPR *handle, const char *paramlist, short *buffer, size_t buf_len, xvpr_result &res);
 
 
 
@@ -204,7 +210,7 @@ XVPR_CODE xvpr_identify_person(XVPR *handle, const char *paramlist, short *buffe
  * ´´½¨ÊµÊ±¶Ëµã¼ì²âÒıÇæ
  * @return ÒıÇæ¾ä±ú
  */
-XVAD *xvpr_vad_create_vad(size_t sr);
+DLLAPI XVAD *xvpr_vad_create_vad(size_t sr);
 
 /**
  * È¥³ı¾²Òô
@@ -214,7 +220,7 @@ XVAD *xvpr_vad_create_vad(size_t sr);
  * @param output Êä³öÓïÒôÁ÷
  * @return ·µ»ØÓĞĞ§ÓïÒô²ÉÑùµã¸öÊı
  */
-size_t xvpr_vad_detect_valid_speech(XVAD *&handle, short *input, size_t length, short *&output);
+DLLAPI size_t xvpr_vad_detect_valid_speech(XVAD *&handle, short *input, size_t length, short *&output);
 
 /**
  * ÊµÊ±¶Ëµã¼ì²â
@@ -223,12 +229,12 @@ size_t xvpr_vad_detect_valid_speech(XVAD *&handle, short *input, size_t length, 
  * @param buf_len ÊµÊ±ÓïÒô°ü²ÉÑùµãÊı
  * @return 0-»¹ÔÚËµ»°£¬1-Í£Ö¹Ëµ»°
  */
-int xvpr_vad_is_speaking(XVAD *&handle, short *buffer, size_t buf_len);
+DLLAPI int xvpr_vad_is_speaking(XVAD *&handle, short *buffer, size_t buf_len);
 
 /** 
  * ÖØÖÃVADÒıÇæ¾ä±ú
  */
-void xvpr_vad_reset_vad(XVAD *&handle);
+DLLAPI void xvpr_vad_reset_vad(XVAD *&handle);
 
 
 /********************************* ÒıÇæ¸¨Öú½Ó¿Ú ******************************************/
@@ -240,7 +246,7 @@ void xvpr_vad_reset_vad(XVAD *&handle);
  * @param buffer ·µ»ØÓïÒôÊı¾İ£¨ÄÚ´æÓÉ½Ó¿ÚÄÚ²¿ÉêÇë£¬²¢ÇÒĞèÒª¿ª·¢Õßµ÷ÓÃ¡¾ÊÍ·ÅÄÚ´æ¡¿µÄ½Ó¿Ú½øĞĞÊÍ·Å£©
  * @return ·µ»ØÓïÒô²ÉÑùµã¸öÊı
  */
-size_t xvpr_aid_read_buffer(const char *path, size_t skip_bits/* Ìø¹ıÍ·²¿¶àÉÙ×Ö½Ú */, short *&buffer);
+DLLAPI size_t xvpr_aid_read_buffer(const char *path, size_t skip_bits/* Ìø¹ıÍ·²¿¶àÉÙ×Ö½Ú */, short *&buffer);
 
 /** 
  * ½«ÓïÒôÊı¾İĞ´ÈëÎÄ¼ş
@@ -248,13 +254,13 @@ size_t xvpr_aid_read_buffer(const char *path, size_t skip_bits/* Ìø¹ıÍ·²¿¶àÉÙ×Ö½
  * @param buffer ÓïÒôÊı¾İ»º³å
  * @param buf_len ÓïÒô²ÉÑùµã¸öÊı
  */
-void xvpr_aid_write_buffer(const char *path, short *buffer/* ÓïÒôÊı¾İ */, size_t buf_len);
+DLLAPI void xvpr_aid_write_buffer(const char *path, short *buffer/* ÓïÒôÊı¾İ */, size_t buf_len);
 
 /**
  * ÊÍ·ÅÄÚ´æ
  * @param buffer ´ıÊÍ·ÅµÄÄÚ´æÖ¸Õë
  */
-void xvpr_aid_release_buffer(short *&buffer);
+DLLAPI void xvpr_aid_release_buffer(short *&buffer);
 
 #ifdef __cplusplus 
 } 

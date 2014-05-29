@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CSDK", "CSDK.vcproj", "{F40895C0-CF03-4184-B7FA-25DA81307FE3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcproj", "{350DC9BD-7BF6-42BD-A0C8-29D79F55516F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{F40895C0-CF03-4184-B7FA-25DA81307FE3}.Debug|Win32.Build.0 = Debug|Win32
 		{F40895C0-CF03-4184-B7FA-25DA81307FE3}.Release|Win32.ActiveCfg = Release|Win32
 		{F40895C0-CF03-4184-B7FA-25DA81307FE3}.Release|Win32.Build.0 = Release|Win32
+		{350DC9BD-7BF6-42BD-A0C8-29D79F55516F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{350DC9BD-7BF6-42BD-A0C8-29D79F55516F}.Debug|Win32.Build.0 = Debug|Win32
+		{350DC9BD-7BF6-42BD-A0C8-29D79F55516F}.Release|Win32.ActiveCfg = Release|Win32
+		{350DC9BD-7BF6-42BD-A0C8-29D79F55516F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
