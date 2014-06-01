@@ -67,14 +67,14 @@ struct xvpr_person_info {
 struct xvpr_result {
 	char collection[32];	/* 说话人群组 */
 	char name[32];		/* 说话人名字 */
-	char gender;	/* 说话人性别 */
 	float similarity;	/* 相似度 */
+	char gender;	/* 说话人性别 */
 
 	xvpr_result() {
 		memset(this->collection, 0, sizeof(char)*32); 
 		memset(this->name, 0, sizeof(char) * 32);
-		this->gender = 'M';
 		this->similarity = 0.0f;
+		this->gender = 'M';
 	}
 };
 
@@ -178,6 +178,15 @@ DLLAPI XVPR_CODE xvpr_reserve_speeches(XVPR *handle, const char *name);
  */
 DLLAPI XVPR_CODE xvpr_register_person(XVPR *handle, const char *name);
 
+
+/**
+ * 更新说话人声纹模型信息
+ * @param handle 声纹引擎请求句柄 
+ * @param name 说话人用户名
+ * @return 返回状态值
+ */
+DLLAPI XVPR_CODE xvpr_update_person(XVPR *handle, const char *name);
+
 /**
  * 说话人声纹验证
  * @param handle 声纹引擎请求句柄 
@@ -188,7 +197,7 @@ DLLAPI XVPR_CODE xvpr_register_person(XVPR *handle, const char *name);
  * @param res 返回声纹确认结果
  * @return 返回状态值
  */
-DLLAPI XVPR_CODE xvpr_verify_person(XVPR *handle, const char *name, const char *paramlist, short *buffer, size_t buf_len, xvpr_result &res);
+DLLAPI XVPR_CODE xvpr_verify_person(XVPR *handle, const char *name, const char *paramlist, short *straem, size_t buf_len, xvpr_result &res);
 /**
  * 说话人声纹辨认
  * @param handle 声纹引擎请求句柄
@@ -198,7 +207,7 @@ DLLAPI XVPR_CODE xvpr_verify_person(XVPR *handle, const char *name, const char *
  * @param res 返回声纹确认结果
  * @return 返回状态值
  */
-DLLAPI XVPR_CODE xvpr_identify_person(XVPR *handle, const char *paramlist, short *buffer, size_t buf_len, xvpr_result &res);
+DLLAPI XVPR_CODE xvpr_identify_person(XVPR *handle, const char *paramlist, short *stream, size_t buf_len, xvpr_result &res);
 
 
 
@@ -229,7 +238,7 @@ DLLAPI size_t xvpr_vad_detect_valid_speech(XVAD *&handle, short *input, size_t l
  * @param buf_len 实时语音包采样点数
  * @return 0-还在说话，1-停止说话
  */
-DLLAPI int xvpr_vad_is_speaking(XVAD *&handle, short *buffer, size_t buf_len);
+DLLAPI int xvpr_vad_is_speaking(XVAD *&handle, short *stream, size_t buf_len);
 
 /** 
  * 重置VAD引擎句柄
@@ -254,7 +263,7 @@ DLLAPI size_t xvpr_aid_read_buffer(const char *path, size_t skip_bits/* 跳过头部
  * @param buffer 语音数据缓冲
  * @param buf_len 语音采样点个数
  */
-DLLAPI void xvpr_aid_write_buffer(const char *path, short *buffer/* 语音数据 */, size_t buf_len);
+DLLAPI int xvpr_aid_write_buffer(const char *path, short *buffer/* 语音数据 */, size_t buf_len);
 
 /**
  * 释放内存

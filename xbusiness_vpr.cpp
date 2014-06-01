@@ -80,11 +80,11 @@ void xvpr_global_release()
 XVPR_CODE xvpr_global_setparam(const char *key,			/* 参数标签 */
 							   const char *param)		/* 参数值 */
 {
-	if (0 == strcmp(key, "apikey")) 
+	if (0 == strcmp(key, "accesskey")) 
 	{
 		strncpy(xvpr_param_api_key, param, 64);
 	} 
-	else if (0 == strcmp(key, "apisecret")) 
+	else if (0 == strcmp(key, "secretkey")) 
 	{
 		strncpy(xvpr_param_api_secret, param, 64);
 	} 
@@ -436,10 +436,26 @@ XVPR_CODE xvpr_register_person(XVPR *handle,
 	return XVPR_CODE_SUCCESS;
 }
 
+XVPR_CODE xvpr_update_person(XVPR *handle, 
+									const char *name)
+{
+	XVPR_CODE ret = xvpr_reserve_speeches(handle, name);
+	if (XVPR_CODE_SUCCESS != ret) {
+		return XVPR_CODE_FAIL;
+	}
+
+	ret = xvpr_register_person(handle, name);
+	if (XVPR_CODE_SUCCESS != ret) {
+		return XVPR_CODE_FAIL;
+	}
+
+	return XVPR_CODE_SUCCESS;
+}
+
 XVPR_CODE xvpr_verify_person(XVPR *handle, 
 							 const char *name,
 							 const char *paramlist,		/* 参数列表 */
-							 short *buffer,					/* 语音数据流 */
+							 short *stream,					/* 语音数据流 */
 							 size_t buf_len, 		/* 语音数据长度 */							 
 							 xvpr_result &res)				/* 相似度 */
 {
@@ -457,7 +473,7 @@ XVPR_CODE xvpr_verify_person(XVPR *handle,
 
 	// 保存语音流到临时文件
 	sprintf(tmppath, "./xbusiness-vpr/verify_%s_%d.pcm", name, time(NULL));
-	xvpr_aid_write_buffer(tmppath, buffer, buf_len);
+	xvpr_aid_write_buffer(tmppath, stream, buf_len);
 
 	// 构造参数
 	struct curl_httppost *post = NULL;
@@ -502,7 +518,7 @@ XVPR_CODE xvpr_verify_person(XVPR *handle,
 
 XVPR_CODE xvpr_identify_person(XVPR *handle, 
 							   const char *paramlist,
-							   short *buffer,
+							   short *stream,
 							   size_t buf_len,
 							   xvpr_result &res)
 {
@@ -520,7 +536,7 @@ XVPR_CODE xvpr_identify_person(XVPR *handle,
 
 	// 保存语音流到临时文件
 	sprintf(tmppath, "./xbusiness-vpr/identify_%s_%d.pcm", (char *)handle, time(NULL));
-	xvpr_aid_write_buffer(tmppath, buffer, buf_len);
+	xvpr_aid_write_buffer(tmppath, stream, buf_len);
 
 	// 构造参数
 	struct curl_httppost *post = NULL;

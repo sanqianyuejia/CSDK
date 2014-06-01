@@ -18,16 +18,17 @@ int main(int argc, char* argv[])
 	}
 	
 	printf("VER: %s\n", xvpr_version());
-	xvpr_global_setparam("apisecret", "1ee0d9b01e8d921a55597785e0b7074e");
-	xvpr_global_setparam("apikey", "1ee0d9b01e8d921a55597785e0b7074e");
-	xvpr_global_setparam("host", "114.215.103.99");
-	xvpr_global_setparam("port", "81");
-	xvpr_global_setparam("type", "1");
+	xvpr_global_setparam("accesskey", "1ee0d9b01e8d92a155597785e0b7074e");
+	xvpr_global_setparam("secretkey", "1ee0d9b01e8d92a155597785e0b7074e");
+	// xvpr_global_setparam("host", "114.215.103.99");
+	xvpr_global_setparam("host", "192.168.1.245");
+	xvpr_global_setparam("port", "82");
+	xvpr_global_setparam("version", "1");
 
 	handle = xvpr_client_init(identifies);
-	
-	// xvpr_create_person(handle, name);
+		
 	// xvpr_remove_person(handle, name);
+	xvpr_create_person(handle, name);
 	
 	//
 	// xvpr_person_info person;
@@ -42,10 +43,10 @@ int main(int argc, char* argv[])
 	// 创建端点检测实例
 	XVAD *vad_handle = xvpr_vad_create_vad(8000);
 	buf_len = xvpr_vad_detect_valid_speech(vad_handle, buffer, buf_len, valid_buffer);
-	xvpr_aid_write_buffer("./xbusiness-vpr/valid.pcm", valid_buffer, buf_len);
+	// xvpr_aid_write_buffer("./xbusiness-vpr/valid.pcm", valid_buffer, buf_len);
 	// xvpr_add_speech(handle, name, "codec:pcm/alaw;sr:8000;verify:true;rule:*", buffer, buf_len, checksum);
 	// xvpr_register_person(handle, name);
-	// xvpr_verify_person(handle, name, "codec:pcm/alaw;sr:8000;verify:true;rule:*", buffer, buf_len, res);
+	xvpr_verify_person(handle, name, "codec:pcm/alaw;sr:8000;verify:true;rule:*", buffer, buf_len, res);
 	xvpr_aid_release_buffer(buffer);
 	xvpr_aid_release_buffer(valid_buffer);
 

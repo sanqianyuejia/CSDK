@@ -137,9 +137,9 @@ static const short _voice_threshold = 350;
 static const int _num_of_sil_buffers = 3;
 /* 判断说话停止必须要满足的条件，即语音帧总数不少于6帧 */
 static const int _num_of_total_buffers = 6;
-int xvpr_vad_is_speaking(XVAD *&handle, short *buffer, size_t buf_len)
+int xvpr_vad_is_speaking(XVAD *&handle, short *stream, size_t buf_len)
 {
-	short mean = get_buffer_mean(buffer, buf_len);	
+	short mean = get_buffer_mean(stream, buf_len);	
 	
 	if (mean > _voice_threshold) {
 		((xvpr_vad_info *) handle)->total_voice_buffers += 1;

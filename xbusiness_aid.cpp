@@ -21,17 +21,17 @@ size_t xvpr_aid_read_buffer(const char *path, size_t skip_bits, short *&buffer)
 	return buf_len;
 }
 
-void xvpr_aid_write_buffer(const char *path, 
+int xvpr_aid_write_buffer(const char *path, 
 							 short *buffer,			/* 语音数据 */
 							 size_t buf_len)	/* 语音采样点数 */
 {
 	FILE *f = fopen(path, "wb");
-	if (NULL == f) { return; }
+	if (NULL == f) { return -1; }
 
 	fwrite(buffer, sizeof(short), buf_len, f);
 	fclose(f);
 
-	return;
+	return 0;
 }
 
 void xvpr_aid_release_buffer(short *&buffer) 
