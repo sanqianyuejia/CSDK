@@ -49,7 +49,7 @@ enum XVPR_CODE {
 };
 
 /* 返回说话人信息 */
-struct xvpr_person_info {
+typedef struct xvpr_person_info {
 	char collection[32];	/* 说话人群组 */
 	char name[32];			/* 说话人名字 */
 	char tag[32];			/* 说话人标签 */
