@@ -60,7 +60,7 @@ XVPR_CODE xvpr_global_init()
 /*
 	·µ»ØÈí¼þ°æ±¾
 	*/
-const char *xvpr_version() { return "xbusiness-vpr-1.0.0"; }
+const char *xvpr_version() { return "xbusiness-vpr-1.1"; }
 
 
 
