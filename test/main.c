@@ -1,13 +1,11 @@
-#include "../xbusiness_vpr.h"
-#include <stdio.h>
-#include <conio.h>
+ï»¿#include "../xbusiness_vpr.h"
 
 
 int main(int argc, char* argv[])
 {
-	XVPR_CODE ret;			// ·µ»ØÖµ
-	XVPR *handle;			// ÒıÇæ¾ä±ú
-	xvpr_result res;		// Ê¶±ğ½á¹û
+	XVPR_CODE ret;			// è¿”å›å€¼
+	XVPR *handle;			// å¼•æ“å¥æŸ„
+	xvpr_result res;		// è¯†åˆ«ç»“æœ
 	
 	char checksum[64] = "";
 	xvpr_person_info person;	
@@ -18,13 +16,13 @@ int main(int argc, char* argv[])
 
 	XVAD *vad_handle = NULL;
 	
-	static char *identifies = "1e24cf708a14ce81";	// ÉùÎÆ¿âÈº×éºÅ£¬¿ÉÎª²»Í¬ÀàĞÍµÄÈÎÎñ·ÖÅä²»Í¬µÄÈº×éºÅ
-	static char *name = "test";	// Ëµ»°ÈËÓÃ»§Ãû
+	static char *identifies = "1e24cf708a14ce81";	// å£°çº¹åº“ç¾¤ç»„å·ï¼Œå¯ä¸ºä¸åŒç±»å‹çš„ä»»åŠ¡åˆ†é…ä¸åŒçš„ç¾¤ç»„å·
+	static char *name = "test";	// è¯´è¯äººç”¨æˆ·å
 
-	// °æ±¾ºÅ
+	// ç‰ˆæœ¬å·
 	printf("VER: %s\n", xvpr_version());
 
-	// È«¾Ö³õÊ¼»¯£¨È«¾ÖÖ»Ğèµ÷Ò»´Î£©
+	// å…¨å±€åˆå§‹åŒ–ï¼ˆå…¨å±€åªéœ€è°ƒä¸€æ¬¡ï¼‰
 	ret = xvpr_global_init();
 	if (XVPR_CODE_SUCCESS != ret) {
 		printf("Init xbusiness-vpr failed. RET = %d\n", ret);
@@ -32,56 +30,58 @@ int main(int argc, char* argv[])
 	}
 	printf("Init xbusiness-vpr success.\n");
 		
-	// ÉèÖÃ½Ó¿Ú²ÎÊı
-	xvpr_global_setparam("accesskey", "db06c78d1e24cf708a14ce81c9b617ec");	// AK
-	xvpr_global_setparam("secretkey", "db06c78d1e24cf708a14ce81c9b617ec");	// SK
-	xvpr_global_setparam("host", "114.215.103.99");		// ·şÎñµØÖ·
-	xvpr_global_setparam("port", "81");					// ·şÎñ¶Ë¿Ú
-	xvpr_global_setparam("version", "1");				// ·şÎñ¶ËÒıÇæÉùÎÆ°æ±¾ºÅ
+	// è®¾ç½®æ¥å£å‚æ•°
+	xvpr_global_setparam("accesskey", "9ca3a97726d708be66d5506400082be2");	// AK
+	xvpr_global_setparam("secretkey", "9ca3a97726d708be66d5506400082be2");	// SK
+	xvpr_global_setparam("host", "114.215.103.99");		// æœåŠ¡åœ°å€
+	xvpr_global_setparam("port", "81");					// æœåŠ¡ç«¯å£
+	xvpr_global_setparam("version", "1");				// æœåŠ¡ç«¯å¼•æ“å£°çº¹ç‰ˆæœ¬å·
 
-	// »ñÈ¡ÉùÎÆÒıÇæ¾ä±ú	
-	// ¸Ã¾ä±ú²»ÄÜ¶àÏß³Ì¹²Ïí£¬±ØĞëÔÚÃ¿¸öÏß³Ì¶ÀÁ¢»ñÈ¡
-	handle = xvpr_client_init(identifies/* ÉùÎÆ¿âÈº×éºÅ */);	
+	// è·å–å£°çº¹å¼•æ“å¥æŸ„	
+	// è¯¥å¥æŸ„ä¸èƒ½å¤šçº¿ç¨‹å…±äº«ï¼Œå¿…é¡»åœ¨æ¯ä¸ªçº¿ç¨‹ç‹¬ç«‹è·å–
+	handle = xvpr_client_init(identifies/* å£°çº¹åº“ç¾¤ç»„å· */);	
 	if (NULL == handle) {
 		printf("Create VPR handle failed. RET = %d\n", ret);
 		return -1;
 	}
 	printf("Create VPR handle success.\n");
-		
-	// ´´½¨Ëµ»°ÈË
-	ret = xvpr_create_person(handle/* ÉùÎÆÒıÇæ¾ä±ú */, name/* Ëµ»°ÈËÓÃ»§Ãû */);
-	if (XVPR_CODE_SUCCESS != ret) {
-		printf("Create speaker information failed. RET = %d\n", ret);
-		return -1;
-	}
-	printf("Create speaker information success.\n");
-	
-// 	// É¾³ıËµ»°ÈË
+
+// 	// åˆ é™¤è¯´è¯äºº
 // 	ret = xvpr_remove_person(handle, name);	
 // 	if (XVPR_CODE_SUCCESS != ret) {
 // 		printf("Remove speaker information failed. RET = %d\n", ret);
-// 		return -1;
+// 		// return -1;
+// 	} else {
+// 		printf("Remove speaker information success.\n");
 // 	}
-//	printf("Remove speaker information success.\n");
+		
+	// åˆ›å»ºè¯´è¯äºº
+	ret = xvpr_create_person(handle/* å£°çº¹å¼•æ“å¥æŸ„ */, name/* è¯´è¯äººç”¨æˆ·å */);
+	if (XVPR_CODE_SUCCESS != ret) {
+		printf("Create speaker information failed. RET = %d\n", ret);
+//		return -1;
+	} else {
+		printf("Create speaker information success.\n");
+	}
 	
-// 	// »ñÈ¡Ëµ»°ÈËĞÅÏ¢
-// 	// ÄÜµÃµ½¸ÃËµ»°ÈËÊÇ·ñÒÑ³É¹¦×¢²áÉùÎÆ
-// 	ret = xvpr_get_info(handle, name, person);
-// 	if (XVPR_CODE_SUCCESS != ret) {
-// 		printf("Get speaker information failed. RET = %d\n", ret);
-// 		return -1;
-// 	}
-//	printf("Get speaker information success.\n");
+	// è·å–è¯´è¯äººä¿¡æ¯
+	// èƒ½å¾—åˆ°è¯¥è¯´è¯äººæ˜¯å¦å·²æˆåŠŸæ³¨å†Œå£°çº¹
+	ret = xvpr_get_info(handle, name, &person);
+	if (XVPR_CODE_SUCCESS != ret) {
+		printf("Get speaker information failed. RET = %d\n", ret);
+		return -1;
+	}
+	printf("Get speaker information success.\n");
 
-	// ¶ÁÈ¡ÓïÒôĞÅÏ¢
-	buf_len = xvpr_aid_read_buffer("../audio/0-9.1.wav", 50, buffer);
+	// è¯»å–è¯­éŸ³ä¿¡æ¯
+	buf_len = xvpr_aid_read_buffer(argv[1], 50, &buffer);	// è¯­éŸ³å‚æ•°
 	if (buf_len <= 0) {
 		printf("Read speech buffer failed. RET = %d\n", buf_len);
 		return -1;
 	}
 	printf("Read speech buffer success.\n");
 
-	// ´´½¨¶Ëµã¼ì²âÊµÀı
+	// åˆ›å»ºç«¯ç‚¹æ£€æµ‹å®ä¾‹
 	vad_handle = xvpr_vad_create_vad(8000);
 	if (NULL == vad_handle) {
 		printf("Create VAD handle failed. RET = %d\n", vad_handle);
@@ -89,15 +89,15 @@ int main(int argc, char* argv[])
 	}
 	printf("Create VAD handle success.\n");
 
-	// ½øĞĞÓĞĞ§ÓïÒô¼ì²â
-	buf_len = xvpr_vad_detect_valid_speech(vad_handle, buffer, buf_len, valid_buffer);
+	// è¿›è¡Œæœ‰æ•ˆè¯­éŸ³æ£€æµ‹
+	buf_len = xvpr_vad_detect_valid_speech(vad_handle, buffer, buf_len, &valid_buffer);
 	if (buf_len <= 0) {
 		printf("No speech detected. RET = %d\n", buf_len);
 		return -1;
 	}
 	printf("Detected valid speech success.\n");
 
-	// ÎªËµ»°ÈËÌí¼ÓÓïÒô£¨×¢Òâ£ºĞèÒªÌí¼Ó3Ìõ»òÒÔÉÏÓïÒô£©	
+	// ä¸ºè¯´è¯äººæ·»åŠ è¯­éŸ³ï¼ˆæ³¨æ„ï¼šéœ€è¦æ·»åŠ 3æ¡æˆ–ä»¥ä¸Šè¯­éŸ³ï¼‰	
 	ret = xvpr_add_speech(handle, name, "codec:pcm/raw;sr:8000;verify:true;rule:*", buffer, buf_len, checksum);
 	if (XVPR_CODE_SUCCESS != ret) {
 		printf("Add speech failed. RET = %d\n", ret);
@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
 	}
 	printf("Add speech success.\n");
 
-	// ×¢²áÉùÎÆ
+	// æ³¨å†Œå£°çº¹
 	ret = xvpr_register_person(handle, name);
 	if (XVPR_CODE_SUCCESS != ret) {
 		printf("Register speaker failed. RET = %d\n", ret);
@@ -113,25 +113,25 @@ int main(int argc, char* argv[])
 	}
 	printf("Register speaker success.\n");
 
-	// ÉùÎÆÈ·ÈÏ
-	ret = xvpr_verify_person(handle, name, "codec:pcm/raw;sr:8000;verify:true;rule:*", buffer, buf_len, res);
+	// å£°çº¹ç¡®è®¤
+	ret = xvpr_verify_person(handle, name, "codec:pcm/raw;sr:8000;verify:true;rule:*", buffer, buf_len, &res);
 	if (XVPR_CODE_SUCCESS != ret) {
 		printf("Verify speaker failed. RET = %d\n", ret);
 		return -1;
 	}
 	printf("Verify speaker success. name=%s, similarity=%2f\n", res.name, res.similarity);
 
-	// ÉùÎÆ±æÈÏ
-	ret = xvpr_identify_person(handle, "codec:pcm/raw;sr:8000;verify:true;rule:*", buffer, buf_len, res);
+	// å£°çº¹è¾¨è®¤
+	ret = xvpr_identify_person(handle, "codec:pcm/raw;sr:8000;verify:true;rule:*", buffer, buf_len, &res);
 	if (XVPR_CODE_SUCCESS != ret) {
 		printf("Identify speaker failed. RET = %d\n", ret);
 		return -1;
 	}
 	printf("Identify speaker success. name=%s, similarity=%2f\n", res.name, res.similarity);
 
-	// ÊÍ·ÅÄÚ´æ
-	xvpr_aid_release_buffer(buffer);
-	xvpr_aid_release_buffer(valid_buffer);
+	// é‡Šæ”¾å†…å­˜
+	xvpr_aid_release_buffer(&buffer);
+	xvpr_aid_release_buffer(&valid_buffer);
 	xvpr_global_release();
 
 	getch();	

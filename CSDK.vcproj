@@ -182,19 +182,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\xbusiness_aid.cpp"
+				RelativePath=".\xbusiness_aid.c"
 				>
 			</File>
 			<File
-				RelativePath=".\xbusiness_misc.cpp"
+				RelativePath=".\xbusiness_misc.c"
 				>
 			</File>
 			<File
-				RelativePath=".\xbusiness_vad.cpp"
+				RelativePath=".\xbusiness_vad.c"
 				>
 			</File>
 			<File
-				RelativePath=".\xbusiness_vpr.cpp"
+				RelativePath=".\xbusiness_vpr.c"
 				>
 			</File>
 		</Filter>

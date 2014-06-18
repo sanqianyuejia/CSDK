@@ -1,4 +1,4 @@
-/***************************************************************************
+ï»¿/***************************************************************************
  *                    __    ____       __ ______  ______
  *  Project           \ \  / /\ \     / /|  __  \|  __  \	
 					   \ \/ /  \ \   / / | | _| || |__| |
@@ -21,7 +21,6 @@
 
 #ifndef _xbusiness_vpr_h_
 #define _xbusiness_vpr_h_
-#include <memory.h>
 
 #ifdef XVPR_LIB_EXPORTS
 #define DLLAPI	_declspec(dllexport)
@@ -33,243 +32,270 @@
 extern "C" {
 #endif 
 
-/* ÉùÎÆÊ¶±ğÒıÇæ¾ä±ú */
+#define bool int
+#define false 0
+#define true 1
+
+#ifndef NULL
+#define NULL 0
+#endif
+
+/* å£°çº¹è¯†åˆ«å¼•æ“å¥æŸ„ */
 typedef void XVPR;
 
-/* ¶Ëµã¼ì²âÒıÇæ¾ä±ú */
+/* ç«¯ç‚¹æ£€æµ‹å¼•æ“å¥æŸ„ */
 typedef void XVAD;
 
-/* º¯Êı·µ»ØÖµÃ¶¾ÙÀàĞÍ */
-enum XVPR_CODE {
-	XVPR_CODE_SUCCESS,			/* µ÷ÓÃ³É¹¦ */
-	XVPR_CODE_FAIL,				/* µ÷ÓÃÊ§°Ü */
-	XVPR_CODE_CONNECT_ERR,		/* ÍøÂçÁ¬½Ó´íÎó */
-	XVPR_CODE_PARAM_ERR,		/* ²ÎÊı´íÎó */
-	XVPR_CODE_NOT_FOUND			/* ¶ÔÏóÎ´·¢ÏÖ */
-};
+/* è¿”å›å€¼ç±»å‹ */
+typedef int XVPR_CODE;
 
-/* ·µ»ØËµ»°ÈËĞÅÏ¢ */
-typedef struct xvpr_person_info {
-	char collection[32];	/* Ëµ»°ÈËÈº×é */
-	char name[32];			/* Ëµ»°ÈËÃû×Ö */
-	char tag[32];			/* Ëµ»°ÈË±êÇ© */
-	bool flag;				/* µÇ¼Ç×´Ì¬ */
+/* å‡½æ•°è¿”å›å€¼åŠè¯´æ˜ */
+XVPR_CODE static XVPR_CODE_SUCCESS = 0x0000;		// è°ƒç”¨æˆåŠŸ
+XVPR_CODE static XVPR_CODE_FAIL = 0x0001;			// è°ƒç”¨å¤±è´¥
+XVPR_CODE static XVPR_CODE_CONNECT_ERR = 0x0002;	// ç½‘ç»œè¿æ¥é”™è¯¯
+XVPR_CODE static XVPR_CODE_PARAM_ERR = 0x0003;		// å‚æ•°è®¾ç½®é”™è¯¯
 
-	xvpr_person_info() {
-		memset(this->collection, 0, sizeof(char)*32); 
-		memset(this->name, 0, sizeof(char) * 32);
-		memset(this->tag, 0, sizeof(char) * 32);
-		this->flag = false;
-	}
-};
+// ---------------------------------------------------------------------
+// é”™è¯¯ä»£ç 	|	é”™è¯¯ä¿¡æ¯						 |	è¯¦ç»†æè¿°
+// ---------|--------------------------------|--------------------------
+// 0000		|	call succeed				 |	è°ƒç”¨æˆåŠŸ
+// 0001		|	call fail					 |	è°ƒç”¨å¤±è´¥
+// 0002		|	connect error				 |	é“¾æ¥é”™è¯¯
+// 0003		|	parameters error			 |	å‚æ•°è®¾ç½®é”™è¯¯
+// 1001		|	auth fail					 |	Keyæˆ–Secreté”™è¯¯
+// 1002		|	network error				 |	ç½‘ç»œé”™è¯¯
+// 1003		|	internal error				 |	æœªçŸ¥é”™è¯¯
+// 1004		|	argument error				 |	å‚æ•°é”™è¯¯
+// 1005		|	database error				 |	æ•°æ®åº“é”™è¯¯
+// 1006		|	system file lost			 |	ç³»ç»Ÿæ–‡ä»¶ä¸¢å¤±
+// 2001		|	person already exist		 |	è¯´è¯äººå·²å­˜åœ¨
+// 2002		|	person not exist			 |	è¯´è¯äººä¸å­˜åœ¨
+// 2003		|	has no persons				 |	æ²¡æœ‰ä»»ä½•è¯´è¯äºº
+// 2004		|	person has no speeches		 |	è¯¥è¯´è¯äººæ²¡æœ‰ç™»è®°è¯­éŸ³
+// 3001		|	voiceprint state error		 |	å£°çº¹è®­ç»ƒçŠ¶æ€é”™è¯¯
+// 3002		|	voiceprint already registered|	è¯´è¯äººå£°çº¹å·²æ³¨å†Œ
+// 3003		|	voiceprint has no speeches	 |	è¯¥è¯´è¯äººä¸å­˜åœ¨ç™»è®°è¯­éŸ³
+// 3004		|	verify error				 |	éªŒè¯å¼‚å¸¸
+// 3005		|	voiceprint not trained		 |	æ²¡æœ‰ç™»è®°å£°çº¹
+// 3006		|	identify error				 |	å£°çº¹è¾¨è®¤å‘ç”Ÿé”™è¯¯
+// 4001		|	speech too short			 |	è¯­éŸ³å¤ªçŸ­
+// 4002		|	speech too long				 |	è¯­éŸ³å¤ªé•¿
+// 4003		|	speech sample rate error	 |	è¯­éŸ³é‡‡æ ·ç‡é”™è¯¯ï¼Œç›®å‰ä»…æ”¯æŒ8k
+// 4004		|	speech already exist		 |	è¯­éŸ³å·²å­˜åœ¨
+// 4005		|	speech not exist			 |	è¯­éŸ³ä¸å­˜åœ¨
+// 4006		|	speech process error		 |	è¯­éŸ³å¤„ç†é”™è¯¯
+// 5001		|	asr recognize error			 |	è¯­éŸ³è¯†åˆ«é”™è¯¯
+// 5002		|	asr not matched				 |	è¯­éŸ³å†…å®¹ä¸åŒ¹é…
+//-------------------------------------------------------------------------
 
-/* ·µ»ØÊ¶±ğ½á¹û */
-struct xvpr_result {
-	char collection[32];	/* Ëµ»°ÈËÈº×é */
-	char name[32];		/* Ëµ»°ÈËÃû×Ö */
-	float similarity;	/* ÏàËÆ¶È */
-	char gender;	/* Ëµ»°ÈËĞÔ±ğ */
+/* è¿”å›è¯´è¯äººä¿¡æ¯ */
+typedef struct xvpr_person_info_s {
+	char collection[32];	/* è¯´è¯äººç¾¤ç»„ */
+	char name[32];			/* è¯´è¯äººåå­— */
+	bool flag;				/* ç™»è®°çŠ¶æ€ */
+	char tag[32];			/* è¯´è¯äººæ ‡ç­¾ */
+} xvpr_person_info;
 
-	xvpr_result() {
-		memset(this->collection, 0, sizeof(char)*32); 
-		memset(this->name, 0, sizeof(char) * 32);
-		this->similarity = 0.0f;
-		this->gender = 'M';
-	}
-};
+/* è¿”å›è¯†åˆ«ç»“æœ */
+typedef struct xvpr_result_s {
+	char collection[32];	/* è¯´è¯äººç¾¤ç»„ */
+	char name[32];		/* è¯´è¯äººåå­— */
+	float similarity;	/* ç›¸ä¼¼åº¦ */
+	char gender;	/* è¯´è¯äººæ€§åˆ« */
+}xvpr_result;
 
 
-/*************************************** ÒıÇæºËĞÄ½Ó¿Ú ************************************/
+/*************************************** å¼•æ“æ ¸å¿ƒæ¥å£ ************************************/
 
 /**
- * ÒıÇæ³õÊ¼»¯£¨Ö»ÄÜµ÷ÓÃÒ»´Î£©
- * @return ³É¹¦·µ»ØXVPR_CODE_SUCCESS£¬Ê§°Ü·µ»ØXVPR_CODE_FAIL
+ * å¼•æ“åˆå§‹åŒ–ï¼ˆåªèƒ½è°ƒç”¨ä¸€æ¬¡ï¼‰
+ * @return æˆåŠŸè¿”å›XVPR_CODE_SUCCESSï¼Œå¤±è´¥è¿”å›XVPR_CODE_FAIL
  */
 DLLAPI XVPR_CODE xvpr_global_init();
 
 /**
- * »ñÈ¡ÒıÇæ°æ±¾ĞÅÏ¢
- * @return ·µ»Ø°æ±¾ĞÅÏ¢
+ * è·å–å¼•æ“ç‰ˆæœ¬ä¿¡æ¯
+ * @return è¿”å›ç‰ˆæœ¬ä¿¡æ¯
  */
 DLLAPI const char *xvpr_version();
 
 /**
- * ÊÍ·ÅÒıÇæ×ÊÔ´£¨ÔÚ³ÌĞòÍË³öµÄÊ±ºòµ÷ÓÃ£©
+ * é‡Šæ”¾å¼•æ“èµ„æºï¼ˆåœ¨ç¨‹åºé€€å‡ºçš„æ—¶å€™è°ƒç”¨ï¼‰
  */
 DLLAPI void xvpr_global_release();
 
 /**
- * ÉèÖÃÒıÇæ²ÎÊı
- * @param key ²ÎÊı¹Ø¼ü×Ö
- * @param param ²ÎÊıÖµ
- * @return ·µ»Ø×´Ì¬Öµ
+ * è®¾ç½®å¼•æ“å‚æ•°
+ * @param key å‚æ•°å…³é”®å­—
+ * @param param å‚æ•°å€¼
+ * @return è¿”å›çŠ¶æ€å€¼
  */
 DLLAPI XVPR_CODE xvpr_global_setparam(const char *key, const char *param);
 
 /**
- * ³õÊ¼»¯µ÷ÓÃÇëÇó£¨¶àÏß³ÌÖ®¼ä²»ÄÜ¹²Ïí¸Ã½Ó¿Ú·µ»ØµÄ¾ä±ú£©
- * @param collection Èº×éID£¬¿ÉÒÔ´´½¨²»Í¬µÄµ÷ÓÃÇëÇó£¬
- * ÒÔ±ãÉèÖÃ²»Í¬µÄÈº×éID
- * @return ·µ»ØÇëÇó¾ä±ú
+ * åˆå§‹åŒ–è°ƒç”¨è¯·æ±‚ï¼ˆå¤šçº¿ç¨‹ä¹‹é—´ä¸èƒ½å…±äº«è¯¥æ¥å£è¿”å›çš„å¥æŸ„ï¼‰
+ * @param collection ç¾¤ç»„IDï¼Œå¯ä»¥åˆ›å»ºä¸åŒçš„è°ƒç”¨è¯·æ±‚ï¼Œ
+ * ä»¥ä¾¿è®¾ç½®ä¸åŒçš„ç¾¤ç»„ID
+ * @return è¿”å›è¯·æ±‚å¥æŸ„
  */
 DLLAPI XVPR *xvpr_client_init(const char *collection);
 
 /**
- * ´´½¨Ëµ»°ÈË
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú
- * @param name Ëµ»°ÈËÓÃ»§Ãû
- * @return ·µ»Ø×´Ì¬Öµ
+ * åˆ›å»ºè¯´è¯äºº
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„
+ * @param name è¯´è¯äººç”¨æˆ·å
+ * @return è¿”å›çŠ¶æ€å€¼
  */
 DLLAPI XVPR_CODE xvpr_create_person(XVPR *handle, const char *name);
 
 /**
- * É¾³ıËµ»°ÈËĞÅÏ¢
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú
- * @param name Ëµ»°ÈËÓÃ»§Ãû
- * @return ·µ»Ø×´Ì¬Öµ
+ * åˆ é™¤è¯´è¯äººä¿¡æ¯
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„
+ * @param name è¯´è¯äººç”¨æˆ·å
+ * @return è¿”å›çŠ¶æ€å€¼
  */
 DLLAPI XVPR_CODE xvpr_remove_person(XVPR *handle, const char *name);
 
 /**
- * »ñÈ¡Ëµ»°ÈËĞÅÏ¢
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú
- * @param name Ëµ»°ÈËÓÃ»§Ãû
- * @param info ·µ»ØËµ»°ÈËĞÅÏ¢
- * @return ·µ»Ø×´Ì¬Öµ
+ * è·å–è¯´è¯äººä¿¡æ¯
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„
+ * @param name è¯´è¯äººç”¨æˆ·å
+ * @param info è¿”å›è¯´è¯äººä¿¡æ¯
+ * @return è¿”å›çŠ¶æ€å€¼
  */
-DLLAPI XVPR_CODE xvpr_get_info(XVPR *handle, const char *name, xvpr_person_info &info);
+DLLAPI XVPR_CODE xvpr_get_info(XVPR *handle, const char *name, xvpr_person_info *info);
 
 /**
- * ÎªËµ»°ÈËÌí¼ÓÓïÒô
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú 
- * @param name Ëµ»°ÈËÓÃ»§Ãû
- * @param paramlist ÓïÒô²ÎÊıÁĞ±í
- * @param stream ÓïÒôÁ÷
- * @param buf_len ÓïÒôÁ÷³¤¶È
- * @param checksum ·µ»ØÓïÒôMD5Öµ
- * @return ·µ»Ø×´Ì¬Öµ
+ * ä¸ºè¯´è¯äººæ·»åŠ è¯­éŸ³
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„ 
+ * @param name è¯´è¯äººç”¨æˆ·å
+ * @param paramlist è¯­éŸ³å‚æ•°åˆ—è¡¨
+ * @param stream è¯­éŸ³æµ
+ * @param buf_len è¯­éŸ³æµé•¿åº¦
+ * @param checksum è¿”å›è¯­éŸ³MD5å€¼
+ * @return è¿”å›çŠ¶æ€å€¼
  */
 DLLAPI XVPR_CODE xvpr_add_speech(XVPR *handle, const char *name, const char *paramlist, 
 						  short *stream, size_t buf_len, char *checksum);
 
 
 /**
- * É¾³ıÓïÒôĞÅÏ¢
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú 
- * @param checksum ÓïÒôMD5Öµ
- * @return ·µ»Ø×´Ì¬Öµ
+ * åˆ é™¤è¯­éŸ³ä¿¡æ¯
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„ 
+ * @param checksum è¯­éŸ³MD5å€¼
+ * @return è¿”å›çŠ¶æ€å€¼
  */
 DLLAPI XVPR_CODE xvpr_remove_speech(XVPR *handle, const char *checksum);
 
 /**
- * ±£Áô×îĞÂÓïÑÔ£¬É¾³ı¶àÓàÓïÒô
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú 
- * @param name Ëµ»°ÈËÓÃ»§Ãû
- * @return ·µ»Ø×´Ì¬Öµ
+ * ä¿ç•™æœ€æ–°è¯­è¨€ï¼Œåˆ é™¤å¤šä½™è¯­éŸ³
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„ 
+ * @param name è¯´è¯äººç”¨æˆ·å
+ * @return è¿”å›çŠ¶æ€å€¼
  */
 DLLAPI XVPR_CODE xvpr_reserve_speeches(XVPR *handle, const char *name);
 
 
 /**
- * ×¢²áËµ»°ÈËÉùÎÆĞÅÏ¢
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú 
- * @param name Ëµ»°ÈËÓÃ»§Ãû
- * @return ·µ»Ø×´Ì¬Öµ
+ * æ³¨å†Œè¯´è¯äººå£°çº¹ä¿¡æ¯
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„ 
+ * @param name è¯´è¯äººç”¨æˆ·å
+ * @return è¿”å›çŠ¶æ€å€¼
  */
 DLLAPI XVPR_CODE xvpr_register_person(XVPR *handle, const char *name);
 
 
 /**
- * ¸üĞÂËµ»°ÈËÉùÎÆÄ£ĞÍĞÅÏ¢
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú 
- * @param name Ëµ»°ÈËÓÃ»§Ãû
- * @return ·µ»Ø×´Ì¬Öµ
+ * æ›´æ–°è¯´è¯äººå£°çº¹æ¨¡å‹ä¿¡æ¯
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„ 
+ * @param name è¯´è¯äººç”¨æˆ·å
+ * @return è¿”å›çŠ¶æ€å€¼
  */
 DLLAPI XVPR_CODE xvpr_update_person(XVPR *handle, const char *name);
 
 /**
- * Ëµ»°ÈËÉùÎÆÑéÖ¤
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú 
- * @param name Ëµ»°ÈËÓÃ»§Ãû
- * @param paramlist ÓïÒô²ÎÊıÁĞ±í
- * @param stream ÓïÒôÁ÷
- * @param buf_len ÓïÒôÁ÷³¤¶È
- * @param res ·µ»ØÉùÎÆÈ·ÈÏ½á¹û
- * @return ·µ»Ø×´Ì¬Öµ
+ * è¯´è¯äººå£°çº¹éªŒè¯
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„ 
+ * @param name è¯´è¯äººç”¨æˆ·å
+ * @param paramlist è¯­éŸ³å‚æ•°åˆ—è¡¨
+ * @param stream è¯­éŸ³æµ
+ * @param buf_len è¯­éŸ³æµé•¿åº¦
+ * @param res è¿”å›å£°çº¹ç¡®è®¤ç»“æœ
+ * @return è¿”å›çŠ¶æ€å€¼
  */
-DLLAPI XVPR_CODE xvpr_verify_person(XVPR *handle, const char *name, const char *paramlist, short *straem, size_t buf_len, xvpr_result &res);
+DLLAPI XVPR_CODE xvpr_verify_person(XVPR *handle, const char *name, const char *paramlist, short *straem, size_t buf_len, xvpr_result *res);
 /**
- * Ëµ»°ÈËÉùÎÆ±æÈÏ
- * @param handle ÉùÎÆÒıÇæÇëÇó¾ä±ú
- * @param paramlist ÓïÒô²ÎÊıÁĞ±í
- * @param stream ÓïÒôÁ÷
- * @param buf_len ÓïÒôÁ÷³¤¶È
- * @param res ·µ»ØÉùÎÆÈ·ÈÏ½á¹û
- * @return ·µ»Ø×´Ì¬Öµ
+ * è¯´è¯äººå£°çº¹è¾¨è®¤
+ * @param handle å£°çº¹å¼•æ“è¯·æ±‚å¥æŸ„
+ * @param paramlist è¯­éŸ³å‚æ•°åˆ—è¡¨
+ * @param stream è¯­éŸ³æµ
+ * @param buf_len è¯­éŸ³æµé•¿åº¦
+ * @param res è¿”å›å£°çº¹ç¡®è®¤ç»“æœ
+ * @return è¿”å›çŠ¶æ€å€¼
  */
-DLLAPI XVPR_CODE xvpr_identify_person(XVPR *handle, const char *paramlist, short *stream, size_t buf_len, xvpr_result &res);
+DLLAPI XVPR_CODE xvpr_identify_person(XVPR *handle, const char *paramlist, short *stream, size_t buf_len, xvpr_result *res);
 
 
 
 
-/********************************* ¶Ëµã¼ì²âÒıÇæºËĞÄ½Ó¿Ú ******************************************/
+/********************************* ç«¯ç‚¹æ£€æµ‹å¼•æ“æ ¸å¿ƒæ¥å£ ******************************************/
 
 
 /**
- * ´´½¨ÊµÊ±¶Ëµã¼ì²âÒıÇæ
- * @return ÒıÇæ¾ä±ú
+ * åˆ›å»ºå®æ—¶ç«¯ç‚¹æ£€æµ‹å¼•æ“
+ * @return å¼•æ“å¥æŸ„
  */
 DLLAPI XVAD *xvpr_vad_create_vad(size_t sr);
 
 /**
- * È¥³ı¾²Òô
- * @param sr ²ÉÑùÂÊ
- * @param input ÊäÈëÓïÒôÁ÷
- * @param length ÊäÈëÓïÒôÁ÷²ÉÑùµã¸öÊı
- * @param output Êä³öÓïÒôÁ÷
- * @return ·µ»ØÓĞĞ§ÓïÒô²ÉÑùµã¸öÊı
+ * å»é™¤é™éŸ³
+ * @param sr é‡‡æ ·ç‡
+ * @param input è¾“å…¥è¯­éŸ³æµ
+ * @param length è¾“å…¥è¯­éŸ³æµé‡‡æ ·ç‚¹ä¸ªæ•°
+ * @param output è¾“å‡ºè¯­éŸ³æµ
+ * @return è¿”å›æœ‰æ•ˆè¯­éŸ³é‡‡æ ·ç‚¹ä¸ªæ•°
  */
-DLLAPI size_t xvpr_vad_detect_valid_speech(XVAD *&handle, short *input, size_t length, short *&output);
+DLLAPI size_t xvpr_vad_detect_valid_speech(XVAD *handle, short *input, size_t length, short **output);
 
 /**
- * ÊµÊ±¶Ëµã¼ì²â
- * @param handle ¶Ëµã¼ì²âÒıÇæ¾ä±ú
- * @param buffer ÊµÊ±ÓïÒô°ü
- * @param buf_len ÊµÊ±ÓïÒô°ü²ÉÑùµãÊı
- * @return 0-»¹ÔÚËµ»°£¬1-Í£Ö¹Ëµ»°
+ * å®æ—¶ç«¯ç‚¹æ£€æµ‹
+ * @param handle ç«¯ç‚¹æ£€æµ‹å¼•æ“å¥æŸ„
+ * @param buffer å®æ—¶è¯­éŸ³åŒ…
+ * @param buf_len å®æ—¶è¯­éŸ³åŒ…é‡‡æ ·ç‚¹æ•°
+ * @return 0-è¿˜åœ¨è¯´è¯ï¼Œ1-åœæ­¢è¯´è¯
  */
-DLLAPI int xvpr_vad_is_speaking(XVAD *&handle, short *stream, size_t buf_len);
+DLLAPI int xvpr_vad_is_speaking(XVAD *handle, short *stream, size_t buf_len);
 
 /** 
- * ÖØÖÃVADÒıÇæ¾ä±ú
+ * é‡ç½®VADå¼•æ“å¥æŸ„
  */
-DLLAPI void xvpr_vad_reset_vad(XVAD *&handle);
+DLLAPI void xvpr_vad_reset_vad(XVAD *handle);
 
 
-/********************************* ÒıÇæ¸¨Öú½Ó¿Ú ******************************************/
+/********************************* å¼•æ“è¾…åŠ©æ¥å£ ******************************************/
 
 /**
- * ´ÓÓïÒôÎÄ¼ş¶Á³öÊı¾İ
- * @param path ÓïÒôÎÄ¼şÂ·¾¶
- * @param skip_bits ĞèÒªÌø¹ıÍ·²¿µÄ×Ö½ÚÊı
- * @param buffer ·µ»ØÓïÒôÊı¾İ£¨ÄÚ´æÓÉ½Ó¿ÚÄÚ²¿ÉêÇë£¬²¢ÇÒĞèÒª¿ª·¢Õßµ÷ÓÃ¡¾ÊÍ·ÅÄÚ´æ¡¿µÄ½Ó¿Ú½øĞĞÊÍ·Å£©
- * @return ·µ»ØÓïÒô²ÉÑùµã¸öÊı
+ * ä»è¯­éŸ³æ–‡ä»¶è¯»å‡ºæ•°æ®
+ * @param path è¯­éŸ³æ–‡ä»¶è·¯å¾„
+ * @param skip_bits éœ€è¦è·³è¿‡å¤´éƒ¨çš„å­—èŠ‚æ•°
+ * @param buffer è¿”å›è¯­éŸ³æ•°æ®ï¼ˆå†…å­˜ç”±æ¥å£å†…éƒ¨ç”³è¯·ï¼Œå¹¶ä¸”éœ€è¦å¼€å‘è€…è°ƒç”¨ã€é‡Šæ”¾å†…å­˜ã€‘çš„æ¥å£è¿›è¡Œé‡Šæ”¾ï¼‰
+ * @return è¿”å›è¯­éŸ³é‡‡æ ·ç‚¹ä¸ªæ•°
  */
-DLLAPI size_t xvpr_aid_read_buffer(const char *path, size_t skip_bits/* Ìø¹ıÍ·²¿¶àÉÙ×Ö½Ú */, short *&buffer);
+DLLAPI size_t xvpr_aid_read_buffer(const char *path, size_t skip_bits/* è·³è¿‡å¤´éƒ¨å¤šå°‘å­—èŠ‚ */, short **buffer);
 
 /** 
- * ½«ÓïÒôÊı¾İĞ´ÈëÎÄ¼ş
- * @param path ÓïÒôÎÄ¼şÂ·¾¶
- * @param buffer ÓïÒôÊı¾İ»º³å
- * @param buf_len ÓïÒô²ÉÑùµã¸öÊı
+ * å°†è¯­éŸ³æ•°æ®å†™å…¥æ–‡ä»¶
+ * @param path è¯­éŸ³æ–‡ä»¶è·¯å¾„
+ * @param buffer è¯­éŸ³æ•°æ®ç¼“å†²
+ * @param buf_len è¯­éŸ³é‡‡æ ·ç‚¹ä¸ªæ•°
  */
-DLLAPI int xvpr_aid_write_buffer(const char *path, short *buffer/* ÓïÒôÊı¾İ */, size_t buf_len);
+DLLAPI int xvpr_aid_write_buffer(const char *path, short *buffer/* è¯­éŸ³æ•°æ® */, size_t buf_len);
 
 /**
- * ÊÍ·ÅÄÚ´æ
- * @param buffer ´ıÊÍ·ÅµÄÄÚ´æÖ¸Õë
+ * é‡Šæ”¾å†…å­˜
+ * @param buffer å¾…é‡Šæ”¾çš„å†…å­˜æŒ‡é’ˆ
  */
-DLLAPI void xvpr_aid_release_buffer(short *&buffer);
+DLLAPI void xvpr_aid_release_buffer(short **buffer);
 
 #ifdef __cplusplus 
 } 
