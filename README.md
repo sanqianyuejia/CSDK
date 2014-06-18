@@ -25,8 +25,9 @@
 
 ## 开发示例——注册说话人声纹
 
- #include "include/config.h"
- #include "include/xbusiness_vpr.h"
+ include "include/config.h"
+ include "include/xbusiness_vpr.h"
+ 
  int main(int argc, char* argv[])
  {
 	XVPR_CODE ret;			// 返回值
