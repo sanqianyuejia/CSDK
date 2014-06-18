@@ -27,14 +27,12 @@
 
 #include "include/config.h"
 #include "include/xbusiness_vpr.h"
-
-
 int main(int argc, char* argv[])
 {
 	XVPR_CODE ret;			// 返回值
 	XVPR *handle;			// 引擎句柄
 	xvpr_result res;		// 识别结果
-	
+		
 	char checksum[64] = "";
 	xvpr_person_info person;	
 
@@ -78,7 +76,6 @@ int main(int argc, char* argv[])
 	ret = xvpr_remove_person(handle, name);	
 	if (XVPR_CODE_SUCCESS != ret) {
 		printf("Remove speaker information failed. RET = %d\n", ret);
-		// return -1;
 	} else {
 		printf("Remove speaker information success.\n");
 	}
@@ -87,7 +84,6 @@ int main(int argc, char* argv[])
 	ret = xvpr_create_person(handle/* 声纹引擎句柄 */, name/* 说话人用户名 */);
 	if (XVPR_CODE_SUCCESS != ret) {
 		printf("Create speaker information failed. RET = %d\n", ret);
-//		return -1;
 	} else {
 		printf("Create speaker information success.\n");
 	}
