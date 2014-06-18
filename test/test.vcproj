@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="test"
+	Name="win32"
 	ProjectGUID="{350DC9BD-7BF6-42BD-A0C8-29D79F55516F}"
 	RootNamespace="test"
 	Keyword="Win32Proj"
@@ -179,7 +179,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.c"
+				RelativePath="..\main.c"
 				>
 			</File>
 		</Filter>

@@ -182,19 +182,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\xbusiness_aid.c"
+				RelativePath=".\src\xbusiness_aid.c"
 				>
 			</File>
 			<File
-				RelativePath=".\xbusiness_misc.c"
+				RelativePath=".\src\xbusiness_misc.c"
 				>
 			</File>
 			<File
-				RelativePath=".\xbusiness_vad.c"
+				RelativePath=".\src\xbusiness_vad.c"
 				>
 			</File>
 			<File
-				RelativePath=".\xbusiness_vpr.c"
+				RelativePath=".\src\xbusiness_vpr.c"
 				>
 			</File>
 		</Filter>
@@ -204,11 +204,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\xbusiness_misc.h"
+				RelativePath=".\src\config.h"
 				>
 			</File>
 			<File
-				RelativePath=".\xbusiness_vpr.h"
+				RelativePath=".\src\xbusiness_misc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\xbusiness_vpr.h"
 				>
 			</File>
 		</Filter>
