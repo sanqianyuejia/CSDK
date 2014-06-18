@@ -25,11 +25,7 @@
 
 ## 开发示例——注册说话人声纹
 
- include "include/config.h"
- include "include/xbusiness_vpr.h"
  
- int main(int argc, char* argv[])
- {
 	XVPR_CODE ret;			// 返回值
 	XVPR *handle;			// 引擎句柄
 	xvpr_result res;		// 识别结果
@@ -165,7 +161,7 @@
 	getchar();	
 	#endif
 	return 0;
-}
+
 
 ## 错误代码对照表
 <table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
