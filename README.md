@@ -25,14 +25,14 @@
 
 ## 开发示例——注册说话人声纹
 
-#include "include/config.h"
-#include "include/xbusiness_vpr.h"
-int main(int argc, char* argv[])
-{
+ #include "include/config.h"
+ #include "include/xbusiness_vpr.h"
+ int main(int argc, char* argv[])
+ {
 	XVPR_CODE ret;			// 返回值
 	XVPR *handle;			// 引擎句柄
 	xvpr_result res;		// 识别结果
-		
+
 	char checksum[64] = "";
 	xvpr_person_info person;	
 
